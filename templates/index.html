@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es"> <!-- significa idioma de la página -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>App del Clima</title> <!-- Título que aparece en la pestaña del navegador -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Conexión con CSS -->
+
+</head>
+
+<body class="{{ resultado.tipo_clima if resultado else '' }}">
+
+    <!-- ☀️ SOL GIRANDO -->
+    {% if resultado and resultado.tipo_clima == "soleado" %} <!-- esto significa: "si el clima es soleado" --> <!-- o sea, básicamente es una condicional  -->
+
+        <div class="sun">☀️</div> <!-- entonces "crea el sol" -->
+
+    {% endif %}
+
+    <!-- 🌧️ LLUVIA -->
+    {% if resultado and resultado.tipo_clima == "lluvia" %} <!-- si está lloviendo  -->
+
+        <div class="rain"> <!-- entonces: crea la caja gigante de lluvia -->
+
+            <!-- Creamos muchas gotas -->
+            {% for i in range(20) %} <!-- esto significa: "repetí esto "20" veces -->
+
+                <div class="drop" style="left: {{ i * 5 }}%"></div> <!-- Y repite esto 20 veces. Esto: "left: {{ i * 5 }}%" significa que mueve cada gota horizontalmente, si no se hace eso, caerían una encima de otra -->
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+    <h1>🌤️ Mi App del Clima</h1> <!-- Título principal visible en la página -->
+
+    <!-- FORMULARIO PARA BUSCAR CLIMA -->
+
+    <form action='/clima' method='POST'> <!-- Este formulario envía la ciudad a Flask --> <!-- action="/clima" → manda los datos a la ruta /clima --> <!-- method="POST" → envía los datos de forma segura -->
+
+        <input type="text" name="ciudad" placeholder="Escribe una ciudad"> <!-- Campo donde el usuario escribe la ciudad --> <!-- name="ciudad" es la clave que Flask usa para leer el dato -->
+
+        <button type="submit">Buscar clima</button> <!-- Botón para enviar el formulario -->
+
+    </form>
+
+    <!-- FORMULARIO PARA FAVORITOS -->
+
+    <form action='/favorito' method='POST'> <!-- Este formulario manda la ciudad para agregar a favoritos -->
+
+        <input type="text" name="ciudad" placeholder="Agregar a favoritos"> <!-- Campo de texto para la ciudad -->
+
+        <button type="submit">⭐ Favorito</button> <!-- Botón para enviar a favoritos -->
+
+    </form>
+
+    <!-- RESULTADOS -->
+
+    {% if resultado %} <!-- Solo se muestra si existe un resultado desde Flask -->
+
+        {% if resultado.error %} <!-- Si hay un error en la API entonces: -->
+
+            <p>{{ resultado.error }}</p> <!-- Mostramos el mensaje de error -->
+
+        {% else %}
+
+            <div class="card"> <!-- TARJETA DEL CLIMA -->
+
+                <h2>{{ resultado.icono }} {{ resultado.ciudad }}</h2> <!-- Sección de resultados del clima -->
+
+                <p>🌡️ Temperatura: {{ resultado.temperatura }} °C</p> <!-- Temperatura -->
+                <p>💧 Humedad: {{ resultado.humedad }} %</p> <!-- Humedad -->
+                <p>🌥️ Clima: {{ resultado.clima }}</p> <!-- Descripción del clima -->
+
+            </div>
+
+        {% endif %}
+
+        <hr>
+
+        <!-- HISTORIAL DE BÚSQUEDAS -->
+
+     <h3>🧾 Historial</h3>
+
+<div class="historial">
+
+    {% for ciudad in resultado.historial %}
+
+        <a href="/buscar/{{ ciudad }}" class="historial-item">
+            📍 {{ ciudad }}
+        </a>
+
+    {% endfor %}
+
+</div>
+
+        <!-- FAVORITOS -->
+
+        <h3>⭐ Favoritos</h3>
+        <ul>
+
+            {% for ciudad in resultado.favoritos %} <!-- Recorre la lista de favoritos -->
+
+                <li>{{ ciudad }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    {% endif %}
+
+</body>
+
+</html>

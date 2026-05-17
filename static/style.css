@@ -1,0 +1,169 @@
+/* ESTILO GENERAL DE LA PÁGINA */
+
+body { /* Estilos del cuerpo de la página */ /* ESTE "BODY" SERÍA LA ESTRUCTURA GENERAL DE LA APP */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+
+    background: linear-gradient(to right, #74ebd5, #ACB6E5); /* Fondo degradado de color (azul a celeste) */
+
+    text-align: center; /* Centra todo el contenido */
+
+    padding: 30px; /* Espacio alrededor de la página */
+
+    color: white; /* Color del texto por defecto */
+
+    /*CENTRAR COMO APP */
+
+    display: flex; /* activa “modo flexible”. Es una herramienta muy usada en CSS moderno */
+
+    flex-direction: column; /* esto pone las cosas una debajo de otra; sin eso " [ input ][ botón ][ card ] " estarían una al lado del otro */
+
+    align-items: center; /* esto centra horizontalmente */
+}
+
+/* TÍTULO PRINCIPAL */
+
+h1 {
+    font-size: 40px; /* Tamaño grande del título */
+
+    margin-bottom: 20px; /* Separación hacia abajo */
+}
+
+/* CAMPOS DE TEXTO */
+
+input {
+    padding: 10px; /* Espacio interno */
+
+    border-radius: 10px; /* Bordes redondeados */
+
+    border: none; /* Sin borde visible */
+
+    margin: 5px; /* Espacio entre elementos */
+}
+
+/* BOTONES */
+
+button {
+    padding: 10px 15px; /* Espacio interno */
+
+    border-radius: 10px; /* Bordes redondeados */
+
+    border: none; /* Sin borde */
+
+    background: #4CAF50; /* Color de fondo verde */
+
+    color: white; /* Texto blanco */
+
+    cursor: pointer; /* Cursor tipo "manito" al pasar */
+}
+
+button:hover { /* Cuando pasás el mouse por encima del botón */
+    background: #3e8e41; /* Verde más oscuro */
+}
+
+/* TARJETA DEL CLIMA */
+
+.card {
+    background: white; /* Fondo blanco */
+    color: black; /* Texto negro */
+    padding: 25px; /* Espacio interno */
+
+    width: 320px; /* Ancho de la tarjeta */
+    margin: 20px auto; /* Separación arriba */
+
+    border-radius: 30px; /* Bordes redondeados */
+
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3); /* Sombra para efecto 3D */
+
+    backdrop-filter: blur(10px); /* efecto app móvil */
+
+    text-align: center;
+}
+
+/* CLIMAS DINÁMICOS */
+
+body.lluvia {
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
+}
+
+body.nublado {
+    background: linear-gradient(to right, #bdc3c7, #2c3e50);
+}
+
+body.soleado {
+    background: linear-gradient(to right, #fceabb, #f8b500);
+}
+
+body.normal {
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+}
+
+/* ☀️ SOL GIRANDO */
+
+.sun {
+    position: fixed; /* hace que el sol quede pegada a la pantalla */
+    top: 20px; /* baja el sol 20 pixeles desde arriba */
+    right: 20px; /* lo separa 20 pixeles del borde derecho */
+    font-size: 70px; /* hace el emoi gigante */
+    animation: girar 6s linear infinite; /* girar: nombre de la animación ; 6s: tarda 6 segundos ; linear: velocidad constante ; infinite: nunca termina */
+    filter: drop-shadow(0 0 10px yellow);
+}
+
+@keyframes girar { /* acá se define "girar" */
+    from { transform: rotate(0deg); } /* empieza en 0 grados */
+    to { transform: rotate(360deg); } /* termina en 360 grados */  /* o sea da una vuelta completa */
+}
+
+/* 🌧️ LLUVIA ANIMADA */
+
+.rain { /* crea una capa gigante sobre toda la pantalla */
+    position: fixed; /* pega la lluvia a la pantalla */
+    top: 0; /* la lluvia empieza desde  arriba de la pantalla */
+    left: 0; /* empieza desde el borde izquierdo */
+    width: 100%; /* ocupa TODO el ancho */
+    height: 100%; /* ocupa todo el alto */
+    pointer-events: none; /* hace que la lluvia no pueda bloquear clics poque o ino la capa de lluvia taparía botones e inputs */
+    overflow: hidden; /* esconde cosas que salen de la pantalla, sin overflow: hidden se verían gotas fuera de la pantalla */
+}
+
+/* gotas */
+.drop { /* objeto dentro de la caja grande (que es rain en este caso) */
+    position: absolute; /* permite mover cada gota individualmente */
+    top: -50px; /* hace que la gota empiece arriba de l pantalla */
+    width: 2px; /* ancho finito de la gota */
+    height: 50px; /* largo de la gota */
+    background: rgba(255,255,255,0.6); /* rgba = red, green, blue, alpha; 255,255,255 = blanco ; 0.6 = transparencia */
+    animation: caer 1s linear infinite; /* "caer": nombre de la animación ; "1s": dura 1 segundo ; "linear": velocidad constante ; "infinite": nunca termina */
+    opacity: 0.6;
+}
+
+@keyframes caer { /* acá definimos caer */
+    to {
+        transform: translateY(100vh); /* significa: mové la gota hacia abajo hasta el final de la pantalla. "translateY": significa mové verticalmente. "100vh": altura de la pantalla */
+    }
+}
+
+/* 🧾 HISTORIAL */
+
+.historial {
+    display: flex; /* hace que los elementos se acomoden en fila */
+    flex-wrap: wrap; /* que los elementos bajen si no entran */
+    justify-content: center;
+    gap: 10px; /* separa los botones entre sí */
+    margin-top: 10px;
+}
+
+.historial-item { /* cada ciudad se vuelve un botón */
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.historial-item:hover { /* cuado se pasa el mouse, cambia de color y se agrande un poquito la ciudad */
+    background: white;
+    color: black;
+    transform: scale(1.05);
+}
