@@ -17,7 +17,7 @@ def inicio():
 @app.route("/clima", methods=["POST"])
 def clima():
 
-    ciudad = request.form["ciudad"] # Obtenemos la ciudad que el usuario escribió en el formulario HTML
+    ciudad = request.form["ciudad"].strip() # Obtenemos la ciudad que el usuario escribió en el formulario HTML
 
     resultado = consultar_clima(ciudad) # Llamamos a la función que consulta el clima en la API
 
@@ -28,7 +28,7 @@ def clima():
 @app.route("/favorito", methods=["POST"])
 def favorito():
 
-    ciudad = request.form["ciudad"]
+    ciudad = request.form["ciudad"].strip()
 
     agregar_favorito(ciudad) # La agregamos a la lista de favoritos (en clima.py)
 
@@ -39,6 +39,8 @@ def favorito():
 @app.route("/buscar/<ciudad>")
 def buscar(ciudad):
 
+    ciudad = ciudad.strip()
+
     resultado = consultar_clima(ciudad)
 
     return render_template("index.html", resultado=resultado)
@@ -46,4 +48,4 @@ def buscar(ciudad):
 # EJECUTAR EL SERVIDOR WEB
 
 if __name__ == "__main__":
-    app.run(debug=True) # debug=True permite ver cambios sin reiniciar y muestra errores en pantalla
+    app.run(debug=True, host="0.0.0.0") # debug=True permite ver cambios sin reiniciar y muestra errores en pantalla

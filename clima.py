@@ -8,7 +8,9 @@ favoritos = [] # Lista de favoritos
 
 def consultar_clima(ciudad): # Función que consulta el clima
 
-    historial.append(ciudad) # Agregamos la ciudad al historial
+    if ciudad not in historial:
+
+        historial.append(ciudad) # Agregamos la ciudad al historial
 
     api_key = "f29f1337d56a610d0fc5198e8ba14903" # Mi API key
 
@@ -24,25 +26,48 @@ def consultar_clima(ciudad): # Función que consulta el clima
         temperatura = datos["main"]["temp"]
         humedad = datos["main"]["humidity"]
         clima = datos["weather"][0]["description"]
-
         # ICONO SEGÚN CLIMA
         # FONDO SEGÚN EL CLIMA
 
-        if "lluv" in clima:
+        # 🌧️ LLUVIA
+        # con esto la app reconoce tormenta, nieve, niebla, nubes, sol
 
-            tipo_clima = "lluvia"  # para el fondo CSS
-            icono = "🌧️"  # para la tarjeta
+        if "lluv" in clima or "rain" in clima:
 
+            tipo_clima = "lluvia"
+            icono = "🌧️"
+
+        # ☁️ NUBLADO
         elif "nube" in clima or "cloud" in clima:
 
             tipo_clima = "nublado"
             icono = "☁️"
 
+        # ☀️ SOLEADO
         elif "despejado" in clima or "clear" in clima:
 
             tipo_clima = "soleado"
             icono = "☀️"
 
+        # ⛈️ TORMENTA
+        elif "torment" in clima or "storm" in clima:
+
+            tipo_clima = "lluvia"
+            icono = "⛈️"
+
+        # 🌫️ NIEBLA
+        elif "niebla" in clima or "mist" in clima or "fog" in clima:
+
+            tipo_clima = "nublado"
+            icono = "🌫️"
+
+        # ❄️ NIEVE
+        elif "snow" in clima or "nieve" in clima:
+
+            tipo_clima = "nublado"
+            icono = "❄️"
+
+        # 🌡️ DEFAULT
         else:
 
             tipo_clima = "normal"
@@ -64,7 +89,7 @@ def consultar_clima(ciudad): # Función que consulta el clima
     else: # Si falla la API entonces retorna:
 
         return {
-            "error": "No se pudo obtener el clima",
+            "error": "⚠️ No se encontró la ciudad o hubo un problema con la conexión",
             "historial": historial,
             "favoritos": favoritos
         }

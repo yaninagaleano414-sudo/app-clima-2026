@@ -9,7 +9,9 @@
 
 </head>
 
-<body class="{{ resultado.tipo_clima if resultado else '' }}">
+<body class="{{ resultado.tipo_clima if resultado else 'normal' }}">
+
+<div class="app-container">
 
     <!-- ☀️ SOL GIRANDO -->
     {% if resultado and resultado.tipo_clima == "soleado" %} <!-- esto significa: "si el clima es soleado" --> <!-- o sea, básicamente es una condicional  -->
@@ -67,11 +69,14 @@
 
             <div class="card"> <!-- TARJETA DEL CLIMA -->
 
-                <h2>{{ resultado.icono }} {{ resultado.ciudad }}</h2> <!-- Sección de resultados del clima -->
+                <h2>📍 {{ resultado.ciudad }}</h2> <!-- Sección de resultados del clima -->
 
                 <p>🌡️ Temperatura: {{ resultado.temperatura }} °C</p> <!-- Temperatura -->
                 <p>💧 Humedad: {{ resultado.humedad }} %</p> <!-- Humedad -->
-                <p>🌥️ Clima: {{ resultado.clima }}</p> <!-- Descripción del clima -->
+                <div class="weather-icon">
+                    {{ resultado.icono }}
+                </div>
+                <p class="weather-text">{{ resultado.clima }}</p>
 
             </div>
 
@@ -97,18 +102,22 @@
 
         <!-- FAVORITOS -->
 
-        <h3>⭐ Favoritos</h3>
-        <ul>
+    <h3>⭐ Favoritos</h3>
 
-            {% for ciudad in resultado.favoritos %} <!-- Recorre la lista de favoritos -->
+ <div class="historial">
 
-                <li>{{ ciudad }}</li>
+    {% for ciudad in resultado.favoritos %}
 
-            {% endfor %}
+        <div class="historial-item">
+            ⭐ {{ ciudad }}
+        </div>
 
-        </ul>
+    {% endfor %}
+
+</div>
 
     {% endif %}
+</div>
 
 </body>
 
